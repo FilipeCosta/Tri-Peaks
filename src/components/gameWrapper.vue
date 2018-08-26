@@ -93,13 +93,13 @@ export default {
 
   &__wrapper {
     margin: 0 auto;
-    width: 60%;
     display: flex;
     flex-direction: column;
   }
 
   &__line {
     display: flex;
+    justify-content: center;
   }
 
   .towers {
