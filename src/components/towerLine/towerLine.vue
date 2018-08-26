@@ -66,6 +66,7 @@ export default {
 <style lang="scss">
   .towerLine {
     display: flex;
+    justify-content: center;
     position: relative;
     top: -90px;
     left: -5px;
