@@ -1,15 +1,15 @@
 <template>
 <div class="tower1">
   <div class="tower1__top-card">
-    <img class="tower1__top-card-image" src="@/assets/images/cardThemes/blue.png" alt="">
+    <img class="tower1__top-card-image" src="/static/images/cardThemes/blue.png" alt="">
     <div class="tower1__second-level">
-      <img class="tower1__top-card-image tower1__second-level-images" src="@/assets/images/cardThemes/blue.png" alt="">
-      <img class="tower1__top-card-image tower1__second-level-images" src="@/assets/images/cardThemes/blue.png" alt="">
+      <img class="tower1__top-card-image tower1__second-level-images" src="/static/images/cardThemes/blue.png" alt="">
+      <img class="tower1__top-card-image tower1__second-level-images" src="/static/images/cardThemes/blue.png" alt="">
     </div>
     <div class="tower1__third-level">
-      <img class="tower1__top-card-image tower1__third-level-images" src="@/assets/images/cardThemes/blue.png" alt="">
-      <img class="tower1__top-card-image tower1__third-level-images" src="@/assets/images/cardThemes/blue.png" alt="">
-      <img class="tower1__top-card-image tower1__third-level-images" src="@/assets/images/cardThemes/blue.png" alt="">
+      <img class="tower1__top-card-image tower1__third-level-images" src="/static/images/cardThemes/blue.png" alt="">
+      <img class="tower1__top-card-image tower1__third-level-images" src="/static/images/cardThemes/blue.png" alt="">
+      <img class="tower1__top-card-image tower1__third-level-images" src="/static/images/cardThemes/blue.png" alt="">
     </div>
   </div>
 </div>
