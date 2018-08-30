@@ -1,6 +1,7 @@
 <template>
   <div class="triPack">
     <img
+      class="triPack__deck"
       @click="refreshCurrentCard()"
       :style="{'left': -index * 30}"
       v-for="(card, index) in deckCards" :key="card.number"
@@ -50,10 +51,17 @@ export default {
       margin-left: 40px;
     }
 
-    img {
+    &__deck {
       width: 80px;
       height: 100px;
       position: relative;
+      transition: transform .05s ease-in;
+
+      &:last-of-type:hover {
+        transform: translateY(-5px);
+        cursor: pointer;
+      }
+
       &:not(:first-child) {
         margin-left: -75px;
       }

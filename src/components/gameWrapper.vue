@@ -2,12 +2,12 @@
   <div class="triPeaks__wrapper">
     <div class="triPeaks__score">Score: {{ score }}</div>
     <div class="triPeaks">
-      <tri-tower class="tower"></tri-tower>
-      <tri-tower class="tower"></tri-tower>
-      <tri-tower class="tower"></tri-tower>
+      <tri-tower pyramidNumber="1" :towerBottomShowCards="towerOneShowCards" class="tower"></tri-tower>
+      <tri-tower pyramidNumber="2" :towerBottomShowCards="towerTwoShowCards" class="tower"></tri-tower>
+      <tri-tower pyramidNumber="3" :towerBottomShowCards="towerThreeShowCards" class="tower"></tri-tower>
     </div>
     <div class="triPeaks__line">
-      <tower-line :deckCards="deckCards" :towerLine="towerLineCards" />
+      <tower-line :deckCards="deckCards" />
     </div>
   </div>
 </template>
@@ -23,9 +23,10 @@ export default {
   name: 'gameWrapper',
   data () {
     return {
-      pyramidCards: [],
-      towerLineCards: [],
-      deckCards: []
+      deckCards: [],
+      pyramid1: [],
+      pyramid2: [],
+      pyramid3: []
     }
   },
   components: {
@@ -35,6 +36,15 @@ export default {
   computed: {
     score () {
       return this.$store.getters.getCurrentScore
+    },
+    towerOneShowCards () {
+      return this.$store.getters.getTowerLineCards.slice(0, 4)
+    },
+    towerTwoShowCards () {
+      return this.$store.getters.getTowerLineCards.slice(3, 7)
+    },
+    towerThreeShowCards () {
+      return this.$store.getters.getTowerLineCards.slice(6, 10)
     }
   },
   methods: {
@@ -59,16 +69,29 @@ export default {
   },
   beforeMount () {
     const deck = this.shuffle(deckData)
+    const towerLineCards = []
 
     for (let i = 0; i < NUMBER_OF_CARDS; i++) {
-      if (i < 18) {
-        this.pyramidCards.push(deck[i])
+      if (i < 6) {
+        deck[i].blueVisible = true
+        this.pyramid1.push(deck[i])
+      } else if (i < 12) {
+        deck[i].blueVisible = true
+        this.pyramid2.push(deck[i])
+      } else if (i < 18) {
+        deck[i].blueVisible = true
+        this.pyramid3.push(deck[i])
       } else if (i < 28) {
-        this.towerLineCards.push(deck[i])
+        towerLineCards.push(deck[i])
       } else {
         this.deckCards.push(deck[i])
       }
     }
+
+    this.$store.commit('setTowerLineCards', towerLineCards)
+    this.$store.commit('setPyramid1', this.pyramid1)
+    this.$store.commit('setPyramid2', this.pyramid2)
+    this.$store.commit('setPyramid3', this.pyramid3)
   }
 }
 </script>

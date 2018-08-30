@@ -17,44 +17,31 @@
 
 <script>
 import triPack from '../triPack/triPack.vue'
-
-const LAST_CARD_TYPE = 1
-const FIRST_CARD_TYPE = 13
+import removeCardHandler from '../../mixins/removeCardHandler.js'
 
 export default {
-  data () {
-    return {
-      currentCard: {}
-    }
-  },
+  mixins: [removeCardHandler],
   props: {
-    towerLine: {
-      type: Array,
-      required: true
-    },
     deckCards: {
       type: Array,
       required: true
     }
   },
+  computed: {
+    towerLine () {
+      return this.$store.getters.getTowerLineCards
+    },
+    currentCard () {
+      return this.$store.getters.getCurrentCard
+    }
+  },
   methods: {
     removeCard (line, index) {
-      this.getCurrentCard()
-      const nextCardType = line.type + 1
-      const beforeCardType = line.type - 1
-
-      const firstCardCheck = (this.currentCard.type === LAST_CARD_TYPE && line.type === FIRST_CARD_TYPE)
-      const lastCardCheck = (this.currentCard.type === FIRST_CARD_TYPE && line.type === LAST_CARD_TYPE)
-      const otherCardCheck = (nextCardType === this.currentCard.type) || (beforeCardType === this.currentCard.type)
-
-      if ((firstCardCheck || lastCardCheck) || otherCardCheck) {
-        this.towerLine[index].visible = false
+      if (this.removeCardHandler(line)) {
+        this.$store.commit('changeVisibility', index)
         this.$store.commit('setCurrentCard', line)
         this.$store.commit('setCurrentScore', 12)
       }
-    },
-    getCurrentCard () {
-      this.currentCard = this.$store.getters.getCurrentCard
     }
   },
   components: {
@@ -78,6 +65,12 @@ export default {
     &__image {
       width: 80px;
       height: 100px;
+      transition: transform .05s ease-in;
+
+      &:hover {
+        transform: scale(1.05);
+        cursor: pointer;
+      }
 
       &:not(:first-child) {
         margin-left: 3px;
