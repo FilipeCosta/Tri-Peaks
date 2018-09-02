@@ -1,13 +1,22 @@
 <template>
-  <div class="triPeaks__wrapper">
-    <div class="triPeaks__score">Score: {{ score }}</div>
-    <div class="triPeaks">
-      <tri-tower pyramidNumber="1" :towerBottomShowCards="towerOneShowCards" class="tower"></tri-tower>
-      <tri-tower pyramidNumber="2" :towerBottomShowCards="towerTwoShowCards" class="tower"></tri-tower>
-      <tri-tower pyramidNumber="3" :towerBottomShowCards="towerThreeShowCards" class="tower"></tri-tower>
-    </div>
-    <div class="triPeaks__line">
-      <tower-line :deckCards="deckCards" />
+  <div>
+    <game-end v-if="towersEmpty"/>
+    <give-up @isNotGiveUp="giveUp = false" v-if="giveUp"></give-up>
+    <div class="triPeaks__wrapper">
+      <div class="triPeaks__info">
+        <div class="triPeaks__score">Score: {{ score }}</div>
+        <div @click="giveUp = true" class="triPeaks__help">
+          Give up
+        </div>
+      </div>
+      <div class="triPeaks">
+        <tri-tower pyramidNumber="1" :towerBottomShowCards="towerOneShowCards" class="tower"></tri-tower>
+        <tri-tower pyramidNumber="2" :towerBottomShowCards="towerTwoShowCards" class="tower"></tri-tower>
+        <tri-tower pyramidNumber="3" :towerBottomShowCards="towerThreeShowCards" class="tower"></tri-tower>
+      </div>
+      <div class="triPeaks__line">
+        <tower-line :deckCards="deckCards" />
+      </div>
     </div>
   </div>
 </template>
@@ -16,6 +25,8 @@
 import deckData from '../services/data/cards.json'
 import triTower from './tower/tower.vue'
 import towerLine from './towerLine/towerLine.vue'
+import gameEnd from './gameEnd/gameEnd.vue'
+import giveUp from './giveUp/giveUp.vue'
 
 const NUMBER_OF_CARDS = 52
 
@@ -26,16 +37,22 @@ export default {
       deckCards: [],
       pyramid1: [],
       pyramid2: [],
-      pyramid3: []
+      pyramid3: [],
+      giveUp: false
     }
   },
   components: {
     triTower,
-    towerLine
+    towerLine,
+    gameEnd,
+    giveUp
   },
   computed: {
     score () {
       return this.$store.getters.getCurrentScore
+    },
+    towersEmpty () {
+      return this.$store.getters.checkEmptyTowers
     },
     towerOneShowCards () {
       return this.$store.getters.getTowerLineCards.slice(0, 4)
@@ -68,6 +85,13 @@ export default {
     }
   },
   beforeMount () {
+    if (this.$store.getters.getCurrentKey === '') {
+      this.$store.commit('setCurrentScore', 0)
+      if (localStorage.getItem('score') !== null) {
+        localStorage.setItem('score', '0')
+      }
+    }
+
     const deck = this.shuffle(deckData)
     const towerLineCards = []
 
@@ -92,6 +116,10 @@ export default {
     this.$store.commit('setPyramid1', this.pyramid1)
     this.$store.commit('setPyramid2', this.pyramid2)
     this.$store.commit('setPyramid3', this.pyramid3)
+
+    if (localStorage.getItem('score') !== null) {
+      this.$store.commit('setScore', +localStorage.getItem('score'))
+    }
   }
 }
 </script>
@@ -104,8 +132,12 @@ export default {
   justify-content: center;
   margin-top: 10px;
 
+  &__info {
+    display: flex;
+    justify-content: space-between;
+  }
+
   &__score {
-    text-align: left;
     font-family: 'Karla';
     font-size: 20px;
     position: relative;
@@ -127,6 +159,16 @@ export default {
 
   .towers {
     width: 33%;
+  }
+
+  &__help {
+    border-radius: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    color: red;
+    margin: 16px 0 30px;
+    font-family: 'Karla';
+    font-weight: 700;
   }
 }
 </style>
