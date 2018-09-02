@@ -1,12 +1,17 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view :key="currentKey" />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  computed: {
+    currentKey () {
+      return this.$store.getters.getCurrentKey
+    }
+  }
 }
 </script>
 

@@ -10,7 +10,8 @@ export const store = new Vuex.Store({
     pyramid1: [],
     pyramid2: [],
     pyramid3: [],
-    score: 0
+    score: 0,
+    appKey: ''
   },
   getters: {
     getCurrentCard: state => {
@@ -30,14 +31,26 @@ export const store = new Vuex.Store({
     },
     getPyramid3: state => {
       return state.pyramid3
+    },
+    getCurrentKey: state => {
+      return state.appKey
+    },
+    checkEmptyTowers: state => {
+      return (state.pyramid1[3] == null && state.pyramid2[3] == null && state.pyramid3[3] == null)
     }
   },
   mutations: {
+    updateKey: (state, key) => {
+      state.appKey = key
+    },
     setCurrentCard: (state, card) => {
       state.currentCard = card
     },
     setCurrentScore: (state, newScore) => {
       state.score += newScore
+    },
+    setScore: (state, score) => {
+      state.score = score
     },
     setTowerLineCards: (state, towerLineCards) => {
       state.towerLine = towerLineCards

@@ -2,85 +2,79 @@
   <div class="tower1">
     <div class="tower1__top-card">
       <div :class="{'tower1__top-card-image--hide' : pyramid[3] == null}">
-        <img
+        <card
           @click="removeCard(pyramid[3], 3)"
           v-if="showTopCard"
-          class="tower1__top-card-image tower1__second-level-images"
-          :src="`/static/images/cards/${pyramid[3].number}.png`"
-          alt="">
-        <img
+          class="tower1__top-card-image  tower1__second-level-images"
+          :card-number="pyramid[3].number"
+          alt="" />
+        <card
           v-else
           class="tower1__top-card-image"
-          src="/static/images/cardThemes/blue.png"
-          alt="">
+          alt="" />
       </div>
       <div class="tower1__second-level">
         <div :class="{'tower1__top-card-image--hide' : pyramid[5] == null}">
-          <img
+          <card
             @click="removeCard(pyramid[5], 5)"
             v-if="showMiddleLevelLeft"
             class="tower1__top-card-image tower1__second-level-images"
-            :src="`/static/images/cards/${pyramid[5].number}.png`"
-            alt="">
-          <img
+            :card-number="pyramid[5].number"
+            alt="" />
+          <card
             v-else
             class="tower1__top-card-image tower1__second-level-images"
-            src="/static/images/cardThemes/blue.png"
-            alt="">
+            alt="" />
         </div>
         <div :class="{'tower1__top-card-image--hide' : pyramid[4] == null}">
-          <img
+          <card
             @click="removeCard(pyramid[4], 4)"
             v-if="showMiddleLevelRight"
             class="tower1__top-card-image tower1__second-level-images"
-            :src="`/static/images/cards/${pyramid[4].number}.png`"
-            alt="">
-          <img
+            :card-number="pyramid[4].number"
+            alt="" />
+          <card
             v-else
             class="tower1__top-card-image tower1__second-level-images"
-            src="/static/images/cardThemes/blue.png"
-            alt="">
+            alt="" />
         </div>
       </div>
       <div class="tower1__third-level">
         <div :class="{'tower1__top-card-image--hide' : pyramid[0] == null}">
-          <img
+          <card
             @click="removeCard(pyramid[0], 0)"
             v-if="showLastLevelLeft"
             class="tower1__top-card-image tower1__third-level-images"
-            :src="`/static/images/cards/${pyramid[0].number}.png`"
-            alt="">
-          <img
+            :card-number="pyramid[0].number"
+            alt="" />
+          <card
             v-else
             class="tower1__top-card-image tower1__third-level-images"
-            src="/static/images/cardThemes/blue.png"
-            alt="">
+            alt="" />
         </div>
         <div :class="{'tower1__top-card-image--hide' : pyramid[1] == null}">
-          <img
+          <card
             @click="removeCard(pyramid[1], 1)"
             v-if="showLastLevelMiddle"
             class="tower1__top-card-image tower1__third-level-images"
-            :src="`/static/images/cards/${pyramid[1].number}.png`"
-            alt="">
-          <img
+            :card-number="pyramid[1].number"
+            alt="" />
+          <card
             v-else
             class="tower1__top-card-image tower1__third-level-images"
-            src="/static/images/cardThemes/blue.png"
-            alt="">
+            alt="" />
         </div>
         <div :class="{'tower1__top-card-image--hide' : pyramid[2] == null}">
-          <img
+          <card
             @click="removeCard(pyramid[2], 2)"
             v-if="showLastLevelRight"
             class="tower1__top-card-image tower1__third-level-images"
-            :src="`/static/images/cards/${pyramid[2].number}.png`"
-            alt="">
-          <img
+            :card-number="pyramid[2].number"
+            alt="" />
+          <card
             v-else
             class="tower1__top-card-image tower1__third-level-images"
-            src="/static/images/cardThemes/blue.png"
-            alt="">
+            alt="" />
         </div>
       </div>
     </div>
@@ -88,10 +82,13 @@
 </template>
 
 <script>
-import removeCardHandler from '../../mixins/removeCardHandler.js'
-
+import RemoveCardHandler from '../../mixins/removeCardHandler.js'
+import Card from '../card/card.vue'
 export default {
-  mixins: [removeCardHandler],
+  mixins: [RemoveCardHandler],
+  components: {
+    Card
+  },
   props: {
     towerBottomShowCards: {
       type: Array,
@@ -108,6 +105,7 @@ export default {
         this.$set(this.pyramid, index, null)
         this.$store.commit(`setPyramid${this.pyramidNumber}`, this.pyramid)
         this.$store.commit('setCurrentCard', line)
+        this.$store.commit('setCurrentScore', 12)
       }
     }
   },
@@ -150,9 +148,6 @@ export default {
     }
 
     &__top-card-image {
-      width: 80px;
-      height: 100px;
-
       &--hide {
         visibility: collapse;
       }

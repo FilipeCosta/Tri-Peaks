@@ -57,6 +57,7 @@ export default {
     position: relative;
     top: -90px;
     left: -5px;
+    z-index: 1;
 
     &--hide {
       visibility: hidden;
