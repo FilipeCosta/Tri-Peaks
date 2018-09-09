@@ -1,6 +1,6 @@
 <template>
   <div>
-    <game-end v-if="!towersEmpty"/>
+    <game-end v-if="towersEmpty"/>
     <give-up @isNotGiveUp="giveUp = false" v-if="giveUp"></give-up>
     <div class="triPeaks__wrapper">
       <div class="triPeaks__info">
