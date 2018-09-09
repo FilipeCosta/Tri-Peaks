@@ -149,7 +149,7 @@ export default {
 
     &__top-card-image {
       &--hide {
-        visibility: collapse;
+        visibility: hidden;
       }
     }
 

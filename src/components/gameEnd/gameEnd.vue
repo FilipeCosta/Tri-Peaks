@@ -1,26 +1,73 @@
 <template>
-<div class="youwin">
-  <img width="60" src="/static/images/background/Pharaoh.png" alt="">
-  <div class="youwin__wrapper">
-    <div class="youwin__text">
-      Congratulation <br> You Win
+<div v-if="!showRanking" class="game-end">
+  <tri-modal>
+    <img width="60" src="/static/images/background/Pharaoh.png" alt="">
+    <div class="game-end__wrapper">
+      <div class="game-end__text">
+        Congratulation <br> You Win
+      </div>
+      <div class="game-end__buttons">
+        <button @click="saveScore" class="game-end__continue">Continue</button>
+        <button @click="giveUp()" class="game-end__stop">Stop Playing</button>
+      </div>
     </div>
-    <div class="youwin__buttons">
-      <button @click="saveScore" class="youwin__continue">Continue</button>
-      <button @click="$router.go()" class="youwin__stop">Stop Playing</button>
-    </div>
-  </div>
-  <img class="youwin__mirror" width="60" src="/static/images/background/Pharaoh.png" alt="">
+    <img class="game-end__mirror" width="60" src="/static/images/background/Pharaoh.png" alt="">
+  </tri-modal>
 </div>
+<tri-ranking :jumpToRanking="jumpToRanking" :keyToRemove="keyToRemove" v-else />
 </template>
 
 <script>
+import firebase from 'firebase'
+import triModal from '../tri-modal/tri-modal.vue'
+import triRanking from '../tri-ranking/tri-ranking.vue'
+
 export default {
   methods: {
     saveScore () {
-      window.localStorage.setItem('score', JSON.stringify(this.score))
-      window.localStorage.setItem('continuePressed', JSON.stringify(true))
+      localStorage.setItem('score', JSON.stringify(this.score))
       this.$store.commit('updateKey', this.generateRandomToken())
+      this.getRanking()
+    },
+
+    giveUp () {
+      if (this.score !== 0) {
+        if (this.getRankingEntrys() < 5) {
+          this.jumpToRanking = false
+        } else {
+          this.removeLowestEntry()
+        }
+      }
+      this.showRanking = true
+      // this.$router.go()
+    },
+
+    getRankingEntrys () {
+      let numberOfEntrys = 0
+      const ref = firebase.database().ref()
+      ref.on('value', (snapshot) => {
+        snapshot.forEach((childSnapshot) => {
+          numberOfEntrys++
+        })
+      })
+      return numberOfEntrys
+    },
+
+    removeLowestEntry () {
+      const ref = firebase.database().ref()
+      ref.orderByChild('value').limitToFirst(1).on('value', (snapshot) => {
+        const key = Object.keys(snapshot.val())[0]
+        if (this.score > parseInt(snapshot.val()[key].score)) {
+          this.jumpToRanking = false
+          this.keyToRemove = key
+        } else {
+          this.jumpToRanking = true
+        }
+      })
+
+      if (this.keyToRemove != null) {
+        this.jumpToRanking = false
+      }
     },
 
     generateRandomToken () {
@@ -28,9 +75,7 @@ export default {
 
       const stringArray = [
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e',
-        'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-        'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
-        'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '!', '?'
+        'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't'
       ]
 
       let rndString = ''
@@ -42,24 +87,28 @@ export default {
 
       return rndString
     }
+  },
+  computed: {
+    score () {
+      return this.$store.getters.getCurrentScore
+    }
+  },
+  components: {
+    triModal,
+    triRanking
+  },
+  data () {
+    return {
+      showRanking: false,
+      keyToRemove: null,
+      jumpToRanking: false
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.youwin {
-  display: flex;
-  z-index: 4;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: auto;
-  height: 25%;
-  padding: 50px;
-  background: #EDC9AF;
-  border: 6px solid #C2B280;
-
+.game-end {
   &__mirror {
     transform: scaleX(-1);
   }
