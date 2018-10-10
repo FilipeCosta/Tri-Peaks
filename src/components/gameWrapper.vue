@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="gameWrapper">
     <game-end v-if="towersEmpty"/>
     <give-up @isNotGiveUp="giveUp = false" v-if="giveUp"></give-up>
     <div class="triPeaks__wrapper">
@@ -147,9 +147,13 @@ export default {
   }
 
   &__wrapper {
-    margin: 0 auto;
+    margin: 130px auto 0;
     display: flex;
     flex-direction: column;
+
+    @media only screen and (min-width: 570px) {
+      margin-top: 0;
+    }
   }
 
   &__line {
@@ -169,6 +173,17 @@ export default {
     margin: 16px 0 30px;
     font-family: 'Karla';
     font-weight: 700;
+  }
+}
+
+.gameWrapper {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) rotateZ(90deg);
+
+  @media only screen and (min-width: 700px) {
+    position: static;
+    transform: none;
   }
 }
 </style>

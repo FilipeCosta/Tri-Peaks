@@ -6,6 +6,7 @@ const config = require('../config')
 const merge = require('webpack-merge')
 const baseWebpackConfig = require('./webpack.base.conf')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
@@ -119,7 +120,12 @@ const webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
+
+    new ImageminPlugin({
+      test: /\.(jpe?g|png|gif|svg)$/i,
+      /* other ImageMin configs */
+    })
   ]
 })
 

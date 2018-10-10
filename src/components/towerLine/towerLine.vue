@@ -2,13 +2,13 @@
   <div class="towerLine-wrapper">
     <div class="towerLine">
       <template v-for="(line, index) in towerLine">
-      <img
+      <card
         :class="{'towerLine--hide': !line.visible}"
         :key="line.number"
+        :cardNumber="line.number"
         @click="removeCard(line, index)"
         class="towerLine__image"
-        :src="line.src"
-        alt="">
+        alt="card" />
       </template>
     </div>
     <tri-pack :deckCards="deckCards" />
@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import Card from '../card/card.vue'
 import triPack from '../triPack/triPack.vue'
 import removeCardHandler from '../../mixins/removeCardHandler.js'
 
@@ -45,7 +46,8 @@ export default {
     }
   },
   components: {
-    triPack
+    triPack,
+    Card
   }
 }
 </script>
@@ -64,15 +66,6 @@ export default {
     }
 
     &__image {
-      width: 80px;
-      height: 100px;
-      transition: transform .05s ease-in;
-
-      &:hover {
-        transform: scale(1.05);
-        cursor: pointer;
-      }
-
       &:not(:first-child) {
         margin-left: 3px;
       }

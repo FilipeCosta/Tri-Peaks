@@ -2,6 +2,7 @@
   <div class="card">
     <img
       v-if="cardNumber === -1"
+      @click="$emit('show')"
       src="/static/images/cardThemes/blue.png"
       alt="">
     <img
@@ -26,9 +27,10 @@ export default {
 
 <style lang="scss" scoped>
 .card {
+
   img {
-    width: 80px;
-    height: 100px;
+    width: 50px;
+    height: 70px;
   }
 
   &__visible {
@@ -36,6 +38,20 @@ export default {
     &:hover {
       transform: scale(1.05);
       cursor: pointer;
+    }
+  }
+
+  @media only screen and (min-width: 570px) {
+    img {
+      width: 60px;
+      height: 80px;
+    }
+  }
+
+  @media only screen and (min-width: 880px) {
+    img {
+      width: 80px;
+      height: 100px;
     }
   }
 }

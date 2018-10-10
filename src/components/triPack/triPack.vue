@@ -1,20 +1,21 @@
 <template>
   <div class="triPack">
-    <img
+    <card
       class="triPack__deck"
-      @click="refreshCurrentCard()"
+      @show="refreshCurrentCard()"
       :style="{'left': -index * 30}"
       v-for="(card, index) in deckCards" :key="card.number"
-      src="/static/images/cardThemes/blue.png"
-      alt="">
+      :cardNumber="-1"
+      alt="" />
     <div class="triPack__currentCard">
-      <img :src="currentCard.src" alt="">
+      <card :cardNumber="currentCard.number" alt="" />>
     </div>
   </div>
 </template>
 
 <script>
 import { cloneDeep } from 'lodash'
+import Card from '../card/card.vue'
 export default {
   props: {
     deckCards: {
@@ -30,11 +31,13 @@ export default {
   methods: {
     refreshCurrentCard () {
       this.$store.commit('setCurrentCard', cloneDeep(this.deckCards.pop()))
-      // this.currentCard = this.$store.getters.getCurrentCard
     }
   },
   beforeMount () {
     this.refreshCurrentCard()
+  },
+  components: {
+    Card
   }
 }
 </script>
