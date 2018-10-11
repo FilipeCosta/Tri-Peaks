@@ -57,9 +57,19 @@ export default {
     display: flex;
     justify-content: center;
     position: relative;
-    top: -90px;
+    top: -60px;
     left: -5px;
     z-index: 1;
+
+    @media only screen and (min-width: 570px) {
+      position: relative;
+      top: -80px
+    }
+
+    @media only screen and (min-width: 880px) {
+      position: relative;
+      top: -90px
+    }
 
     &--hide {
       visibility: hidden;

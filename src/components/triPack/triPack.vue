@@ -50,6 +50,10 @@ export default {
     position: relative;
     margin-top: -20px;
 
+    @media only screen and (max-width: 570px) {
+      top: -20px;
+    }
+
     &__currentCard {
       margin-left: 40px;
     }

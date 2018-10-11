@@ -132,9 +132,19 @@ export default {
   justify-content: center;
   margin-top: 10px;
 
+  @media only screen and (max-width: 570px) {
+    position: relative;
+    top: 30px;
+  }
+
   &__info {
     display: flex;
     justify-content: space-between;
+
+    @media only screen and (max-width: 570px) {
+      position: relative;
+      top: 45px;
+    }
   }
 
   &__score {

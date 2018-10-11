@@ -29,8 +29,8 @@ export default {
 .card {
 
   img {
-    width: 50px;
-    height: 70px;
+    width: 40px;
+    height: 60px;
   }
 
   &__visible {
